@@ -7,7 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   app.enableCors() // Включение CORS
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true
+  }))
   app.setGlobalPrefix('api')
   app.use(passport.initialize()) // Инициализация Passport
 

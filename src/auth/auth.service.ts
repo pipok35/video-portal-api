@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException  } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from '../users/users.service'
 import * as bcrypt from 'bcryptjs'
@@ -13,10 +13,14 @@ export class AuthService {
 
   async validateUser(username: string, pass: string) {
     const user = await this.usersService.findOne(username)
-    if (user && bcrypt.compareSync(pass, user.password)) {
-      return user
+    if (!user) {
+      throw new UnauthorizedException('Пользователь с таким логином не найден!')
     }
-    return null
+    if (!bcrypt.compareSync(pass, user.password)) {
+      throw new UnauthorizedException('Неверный логин или пароль!')
+    }
+    
+    return user
   }
 
   async login(user: any) {
