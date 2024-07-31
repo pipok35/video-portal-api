@@ -6,16 +6,16 @@ export type ChannelDocument = Channel & Document;
 @Schema()
 export class Channel {
   @Prop({ required: true })
-  name: string
+    name: string
 
   @Prop()
-  description: string
+    description: string
 
   @Prop({ required: true })
-  ownerId: string
+    ownerId: string
 
-  @Prop({ type: [String], default: [] })
-  subscribers: string[]
+  @Prop({ type: [ String ], default: [] })
+    subscribers: string[]
 }
 
 export const ChannelSchema = SchemaFactory.createForClass(Channel)

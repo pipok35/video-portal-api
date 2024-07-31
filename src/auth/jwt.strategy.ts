@@ -9,10 +9,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'your_secret_key', // Измените на ваш секретный ключ
+      secretOrKey: 'your_secret_key'
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async validate(payload: any) {
     return { userId: payload.sub, username: payload.username }
   }
