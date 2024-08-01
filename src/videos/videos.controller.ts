@@ -1,17 +1,16 @@
 import { Controller, Get, Post, Body, Request, Param } from '@nestjs/common'
 import { VideosService } from './videos.service'
-import { Video } from './shemas/video.schema'
+import { VideoDto } from './dto/video.dto'
 
 @Controller('videos')
 export class VideosController {
   constructor(private readonly videosService: VideosService) {}
 
   @Post()
-  async create(@Body() createVideoDto: Video, @Request() req) {
-    createVideoDto.ownerId = req.user.userId
-    return this.videosService.create(createVideoDto)
+  async create(@Body() createVideoDto: VideoDto, @Request() req) {
+    return this.videosService.create(createVideoDto, { user: req.user.userId })
   }
-
+  
   @Get()
   async findAll() {
     return this.videosService.findAll()
