@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
 import { VideosModule } from './videos/videos.module'
 import { ChannelsModule } from './channels/channels.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 
 @Module({
   imports: [
@@ -18,6 +20,10 @@ import { ChannelsModule } from './channels/channels.module'
         uri: configService.get<string>('database.url')
       }),
       inject: [ ConfigService ]
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads'
     }),
     AuthModule,
     UsersModule,
@@ -31,5 +37,4 @@ import { ChannelsModule } from './channels/channels.module'
     }
   ]
 })
-  
 export class AppModule {}

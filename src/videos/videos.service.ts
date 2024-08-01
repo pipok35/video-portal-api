@@ -2,16 +2,19 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Video, VideoDocument } from './shemas/video.schema'
-import { VideoDto } from './dto/video.dto'
+import { CreateVideoDto } from './dto/createVideo.dto'
 
 @Injectable()
 export class VideosService {
   constructor(@InjectModel(Video.name) private videoModel: Model<VideoDocument>) {}
 
-  async create(video: VideoDto, options): Promise<Video> {
+  async create(file: Express.Multer.File, CreateVideoDto: CreateVideoDto, options): Promise<Video> {
     const createdVideo = new this.videoModel({
-      ...video,
-      ownerId: options?.user
+      filename: file.filename,
+      path: file.path,
+      title: CreateVideoDto.title,
+      description: CreateVideoDto.description,
+      createdBy: options?.user
     })
     return createdVideo.save()
   }

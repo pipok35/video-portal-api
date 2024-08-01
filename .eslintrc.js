@@ -19,6 +19,8 @@ module.exports = {
     '@typescript-eslint/indent': [ 'error', 2 ], // Использовать 2 пробела для отступов в TypeScript
     'comma-dangle': [ 'error', 'never' ], // Запретить запятые после последнего элемента
     'array-bracket-spacing': [ 'error', 'always' ], // Обеспечить пробел внутри массивов
-    'object-curly-spacing': [ 'error', 'always' ] // Обеспечить пробел внутри объектов
+    'object-curly-spacing': [ 'error', 'always' ], // Обеспечить пробел внутри объектов
+    'space-in-parens': [ 'error', 'never' ] // Запретить пробелы внутри круглых скобок
+
   }
 }
