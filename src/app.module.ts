@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
+import { APP_GUARD } from '@nestjs/core'
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 import configuration from './config/config'
 import { ConfigModule, ConfigService  } from '@nestjs/config'
 import { AuthModule } from './auth/auth.module'
@@ -21,6 +23,12 @@ import { ChannelsModule } from './channels/channels.module'
     UsersModule,
     VideosModule,
     ChannelsModule
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard
+    }
   ]
 })
   

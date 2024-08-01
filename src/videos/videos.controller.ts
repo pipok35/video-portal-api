@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, UseGuards, Request, Param } from '@nestjs/common'
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { VideosService } from './videos.service'
 import { Video } from './shemas/video.schema'
 
