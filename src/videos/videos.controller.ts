@@ -20,8 +20,9 @@ export class VideosController {
       }
     })
   }))
-  uploadFile(@UploadedFile() file: Express.Multer.File, @Body() createVideoDto: CreateVideoDto, @Request() req) {
-    return this.videosService.create(file, createVideoDto, { user: req.user.userId })
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() createVideoDto: CreateVideoDto, @Request() req) {
+    const video = await this.videosService.create(file, createVideoDto, { user: req.user.userId })
+    return { video, id: video._id }
   }
   
   @Get()
