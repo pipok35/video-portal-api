@@ -1,5 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Request, Param } from '@nestjs/common'
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { Controller, Get, Post, Body, Request, Param } from '@nestjs/common'
 import { VideosService } from './videos.service'
 import { Video } from './shemas/video.schema'
 
@@ -7,7 +6,6 @@ import { Video } from './shemas/video.schema'
 export class VideosController {
   constructor(private readonly videosService: VideosService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createVideoDto: Video, @Request() req) {
     createVideoDto.ownerId = req.user.userId

@@ -22,13 +22,11 @@ export class ChannelsController {
     return this.channelsService.findOne(id)
   }
 
-  // @UseGuards(JwtAuthGuard)
   @Post(':id/subscribe')
   async subscribe(@Param('id') channelId: string, @Request() req) {
     return this.channelsService.subscribe(channelId, req.user.userId)
   }
 
-  // @UseGuards(JwtAuthGuard)
   @Post(':id/unsubscribe')
   async unsubscribe(@Param('id') channelId: string, @Request() req) {
     return this.channelsService.unsubscribe(channelId, req.user.userId)
