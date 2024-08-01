@@ -11,8 +11,8 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async validateUser(username: string, pass: string) {
-    const user = await this.usersService.findOne(username)
+  async validateUser(email: string, pass: string) {
+    const user = await this.usersService.findOne(email)
     if (!user) {
       throw new UnauthorizedException('Пользователь с таким логином не найден!')
     }
@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user._id }
+    const payload = { email: user.email, sub: user._id }
 
     return {
       access_token: this.jwtService.sign(payload)
