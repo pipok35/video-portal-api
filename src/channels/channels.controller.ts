@@ -1,25 +1,24 @@
 import { Controller, Get, Post, Body, Request, Param } from '@nestjs/common'
 import { ChannelsService } from './channels.service'
-import { Channel } from './schemas/channel.schema'
+import { CreateChannelDto } from './dto/createChannel.dto'
 
 @Controller('channels')
 export class ChannelsController {
   constructor(private readonly channelsService: ChannelsService) {}
 
   @Post()
-  async create(@Body() createChannelDto: Channel, @Request() req) {
-    createChannelDto.ownerId = req.user.userId
-    return this.channelsService.create(createChannelDto)
+  async create(@Body() createChannelDto: CreateChannelDto, @Request() req) {
+    return this.channelsService.create(createChannelDto, { user: req.user })
   }
 
   @Get()
-  async findAll() {
-    return this.channelsService.findAll()
+  async findAll(@Request() req) {
+    return this.channelsService.findAll({ createdBy: req.user })
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.channelsService.findOne(id)
+  async findOne(@Param('id') id: string, @Request() req) {
+    return await this.channelsService.findOne({ _id: id, createdBy: req.user })
   }
 
   @Post(':id/subscribe')
