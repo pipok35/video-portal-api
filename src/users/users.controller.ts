@@ -14,6 +14,6 @@ export class UsersController {
     if (oldUser) {
       throw new BadRequestException('Такой пользователь уже был зарегистрирован!')
     }
-    return this.usersService.register(createUserDto)
+    return await this.usersService.register(createUserDto)
   }
 }
