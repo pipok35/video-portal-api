@@ -21,17 +21,17 @@ export class VideosController {
     })
   }))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() createVideoDto: CreateVideoDto, @Request() req) {
-    const video = await this.videosService.create(file, createVideoDto, { user: req.user.userId })
+    const video = await this.videosService.create(file, createVideoDto, { user: req.user })
     return { video, id: video._id }
   }
   
   @Get()
-  async findAll() {
-    return this.videosService.findAll()
+  async findAll(@Request() req) {
+    return this.videosService.findAll({ createdBy: req.user })
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.videosService.findOne(id)
+  async findOne(@Param('id') id: string, @Request() req) {
+    return this.videosService.findOne({ _id: id, createdBy: req.user })
   }
 }

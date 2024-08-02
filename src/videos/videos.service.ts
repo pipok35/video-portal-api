@@ -8,7 +8,7 @@ import { CreateVideoDto } from './dto/createVideo.dto'
 export class VideosService {
   constructor(@InjectModel(Video.name) private videoModel: Model<VideoDocument>) {}
 
-  async create(file: Express.Multer.File, CreateVideoDto: CreateVideoDto, options): Promise<Video> {
+  async create(file: Express.Multer.File, CreateVideoDto: CreateVideoDto, options: { user: string }): Promise<Video> {
     const createdVideo = new this.videoModel({
       filename: file.filename,
       path: file.path,
@@ -19,11 +19,11 @@ export class VideosService {
     return createdVideo.save()
   }
 
-  async findAll(): Promise<Video[]> {
-    return this.videoModel.find().exec()
+  async findAll(conditions: { createdBy: string }): Promise<Video[]> {
+    return this.videoModel.find(conditions)
   }
 
-  async findOne(id: string): Promise<Video> {
-    return this.videoModel.findById(id).exec()
+  async findOne(conditions: { _id: string, createdBy: string }): Promise<Video> {
+    return this.videoModel.findOne(conditions)
   }
 }

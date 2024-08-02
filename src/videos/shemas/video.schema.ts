@@ -32,6 +32,12 @@ export class Video {
   
   @Prop({ default: Date.now })
     updatedAt: Date
+  
+  @Prop()
+    deletedBy: string
+  
+  @Prop({ default: Date.now })
+    deletedAt: Date
 }
 
 export const VideoSchema = SchemaFactory.createForClass(Video)
