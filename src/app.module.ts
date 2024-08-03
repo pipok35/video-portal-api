@@ -10,6 +10,7 @@ import { VideosModule } from './videos/videos.module'
 import { ChannelsModule } from './channels/channels.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { join } from 'path'
     AuthModule,
     UsersModule,
     VideosModule,
-    ChannelsModule
+    ChannelsModule,
+    FilesModule
   ],
   providers: [
     {

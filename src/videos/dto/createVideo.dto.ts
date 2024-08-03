@@ -7,4 +7,10 @@ export class CreateVideoDto {
 
   @IsString()
     description: string
+  
+  @IsString()
+    url: string
+  
+  @IsString()
+    filename: string
 }

@@ -19,7 +19,7 @@ export class Video {
     filename: string
 
   @Prop({ required: true })
-    path: string
+    url: string
   
   @Prop()
     createdBy: string

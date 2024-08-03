@@ -8,12 +8,12 @@ import { CreateVideoDto } from './dto/createVideo.dto'
 export class VideosService {
   constructor(@InjectModel(Video.name) private videoModel: Model<VideoDocument>) {}
 
-  async create(file: Express.Multer.File, CreateVideoDto: CreateVideoDto, options: { user: string }): Promise<Video> {
+  async create(CreateVideoDto: CreateVideoDto, options: { user: string }): Promise<Video> {
     const createdVideo = new this.videoModel({
-      filename: file.filename,
-      path: file.path,
       title: CreateVideoDto.title,
       description: CreateVideoDto.description,
+      filename: CreateVideoDto.filename,
+      url: CreateVideoDto.url,
       createdBy: options?.user
     })
     return createdVideo.save()
