@@ -10,12 +10,10 @@ export class VideosService {
 
   async create(CreateVideoDto: CreateVideoDto, options: { user: string }): Promise<Video> {
     const createdVideo = new this.videoModel({
-      title: CreateVideoDto.title,
-      description: CreateVideoDto.description,
-      filename: CreateVideoDto.filename,
-      url: CreateVideoDto.url,
+      ...CreateVideoDto,
       createdBy: options?.user
     })
+    
     return createdVideo.save()
   }
 
