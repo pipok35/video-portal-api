@@ -3,6 +3,8 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { FilesService } from './files.service'
 import { Public } from 'src/decorators/public.decorator'
 import { File } from './schemas/file.schema'
+import { path } from 'app-root-path'
+
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) { }
@@ -19,6 +21,10 @@ export class FilesController {
   @Public()
   @Get(':fileId/download')
   async getFile(@Param('fileId') fileId: string): Promise<StreamableFile> {
-    return await this.filesService.downloadFile(fileId)
+    const file = await this.filesService.findOne({ _id: fileId })
+    const filePath = `${path}/uploads/${file.path}`
+    const stream = await this.filesService.getFileReadStream(filePath)
+
+    return new StreamableFile(stream)
   }
 }

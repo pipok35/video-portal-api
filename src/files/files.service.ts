@@ -1,4 +1,4 @@
-import { Injectable, StreamableFile } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { path } from 'app-root-path'
 import { extname } from 'path'
@@ -30,11 +30,8 @@ export class FilesService {
     await writeFile(uploadFolder, data)
   }
 
-  async downloadFile(fileId: string) {
-    const file = await this.findOne({ _id: fileId })
-    const filePath = `${path}/uploads/${file.path}`
-    const stream = createReadStream(filePath)
-    return new StreamableFile(stream)
+  async getFileReadStream(filePath: string) {
+    return createReadStream(filePath)
   }
 
   async findOne(conditions: { _id: string }): Promise<File> {
