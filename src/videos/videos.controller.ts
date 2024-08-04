@@ -14,11 +14,11 @@ export class VideosController {
   
   @Get()
   async findAll(@Request() req) {
-    return this.videosService.findAll({ createdBy: req.user })
+    return this.videosService.findAll({ 'created.by': req.user })
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Request() req) {
-    return this.videosService.findOne({ _id: id, createdBy: req.user })
+    return this.videosService.findOne({ _id: id, 'created.by': req.user })
   }
 }

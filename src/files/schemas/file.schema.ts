@@ -3,21 +3,18 @@ import { Document } from 'mongoose'
 import { ByAt } from 'src/interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
 
-export type ChannelDocument = Channel & Document;
+export type FileDocument = File & Document;
 
 @Schema({ versionKey: false, timestamps: false })
-export class Channel {
+export class File {
   @Prop({ required: true, default: uuidv4 })
     _id: string
   
   @Prop({ required: true })
-    title: string
+    name: string
 
-  @Prop()
-    description: string
-
-  @Prop({ type: [ String ], default: [] })
-    subscribers: string[]
+  @Prop({ required: true })
+    path: string
   
   @Prop(raw({
     by: String,
@@ -38,4 +35,4 @@ export class Channel {
     deleted?: Record<string, ByAt>
 }
 
-export const ChannelSchema = SchemaFactory.createForClass(Channel)
+export const FileSchema = SchemaFactory.createForClass(File)

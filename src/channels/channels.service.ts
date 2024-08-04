@@ -11,17 +11,17 @@ export class ChannelsService {
   async create(channel: CreateChannelDto, options: { user: string }): Promise<Channel> {
     const createdChannel = new this.channelModel({
       ...channel,
-      createdBy: options?.user
+      'created.by': options?.user
     })
 
     return createdChannel.save()
   }
 
-  async findAll(conditions: { createdBy: string }): Promise<Channel[]> {
+  async findAll(conditions: { 'created.by': string }): Promise<Channel[]> {
     return this.channelModel.find(conditions)
   }
 
-  async findOne(conditions: { _id: string, createdBy: string }): Promise<Channel> {
+  async findOne(conditions: { _id: string, 'created.by': string }): Promise<Channel> {
     return this.channelModel.findOne(conditions)
   }
 

@@ -1,10 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
+import { ByAt } from 'src/interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
 
 export type VideoDocument = Video & Document;
 
-@Schema()
+@Schema({ versionKey: false, timestamps: false })
 export class Video {
   @Prop({ required: true, default: uuidv4 })
     _id: string
@@ -21,23 +22,17 @@ export class Video {
   @Prop({ required: true })
     url: string
   
-  @Prop()
-    createdBy: string
-  
-  @Prop({ default: Date.now })
-    createdAt: Date
-  
-  @Prop()
-    updatedBy: string
-  
-  @Prop({ default: Date.now })
-    updatedAt: Date
-  
-  @Prop()
-    deletedBy: string
-  
-  @Prop({ default: Date.now })
-    deletedAt: Date
+  @Prop(raw({
+    by: String,
+    at: Date
+  }))
+    created?: Record<string, ByAt>
+
+  @Prop(raw({
+    by: String,
+    at: Date
+  }))
+    deleted?: Record<string, ByAt>
 }
 
 export const VideoSchema = SchemaFactory.createForClass(Video)

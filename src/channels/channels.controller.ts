@@ -13,12 +13,12 @@ export class ChannelsController {
 
   @Get()
   async findAll(@Request() req) {
-    return this.channelsService.findAll({ createdBy: req.user })
+    return this.channelsService.findAll({ 'created.by': req.user })
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Request() req) {
-    return await this.channelsService.findOne({ _id: id, createdBy: req.user })
+    return await this.channelsService.findOne({ _id: id, 'created.by': req.user })
   }
 
   @Post(':id/subscribe')

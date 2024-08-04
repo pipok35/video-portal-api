@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { Controller, Request, Get, Post, Query, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { FilesService } from './files.service'
 import { createReadStream } from 'fs'
@@ -11,8 +11,8 @@ export class FilesController {
     
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File, @Query('type') type: string): Promise<FileResponse> {
-    return this.filesService.saveFile(file, { type })
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Query('type') type: string, @Request() req): Promise<FileResponse> {
+    return this.filesService.createFile(file, type, { user: req.user })
   }
 
   @Public()

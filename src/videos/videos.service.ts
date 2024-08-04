@@ -11,17 +11,17 @@ export class VideosService {
   async create(CreateVideoDto: CreateVideoDto, options: { user: string }): Promise<Video> {
     const createdVideo = new this.videoModel({
       ...CreateVideoDto,
-      createdBy: options?.user
+      'created.by': options?.user
     })
     
     return createdVideo.save()
   }
 
-  async findAll(conditions: { createdBy: string }): Promise<Video[]> {
+  async findAll(conditions: { 'created.by': string }): Promise<Video[]> {
     return this.videoModel.find(conditions)
   }
 
-  async findOne(conditions: { _id: string, createdBy: string }): Promise<Video> {
+  async findOne(conditions: { _id: string, 'created.by': string }): Promise<Video> {
     return this.videoModel.findOne(conditions)
   }
 }
