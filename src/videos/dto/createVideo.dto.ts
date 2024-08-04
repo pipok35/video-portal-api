@@ -9,8 +9,5 @@ export class CreateVideoDto {
     description: string
   
   @IsString()
-    url: string
-  
-  @IsString()
-    filename: string
+    file: string
 }

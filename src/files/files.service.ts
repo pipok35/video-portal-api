@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, StreamableFile } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { path } from 'app-root-path'
 import { extname } from 'path'
+import { createReadStream } from 'fs'
 import { ensureDir, writeFile } from 'fs-extra'
-import { FileResponse } from 'src/interfaces/file-response'
 import { File, FileDocument } from './schemas/file.schema'
 import { Model } from 'mongoose'
 
@@ -11,7 +11,7 @@ import { Model } from 'mongoose'
 export class FilesService {
   constructor(@InjectModel(File.name) private fileModel: Model<FileDocument>) {}
 
-  async createFile(file: Express.Multer.File, type: string, options: { user: string }): Promise<FileResponse> {
+  async createFile(file: Express.Multer.File, type: string, options: { user: string }): Promise<File> {
     const createdFile = new this.fileModel({
       name: file.originalname,
       'created.by': options?.user
@@ -20,17 +20,24 @@ export class FilesService {
     const extension = extname(createdFile.name)
     createdFile.path = `${type}/${createdFile._id}${extension}`
     createdFile.save()
-
-    const uploadFolder = await this.saveFile(createdFile.path, type, file.buffer)
     
-    return { url: uploadFolder, name: createdFile.name }
+    return createdFile
   }
 
-  async saveFile(filePath: string, type:string, data: Buffer): Promise<string> {
+  async writeFile(filePath: string, type:string, data: Buffer) {
     const uploadFolder = `${path}/uploads/${filePath}`
     await ensureDir(`${path}/uploads/${type}`)
     await writeFile(uploadFolder, data)
+  }
 
-    return uploadFolder
+  async downloadFile(fileId: string) {
+    const file = await this.findOne({ _id: fileId })
+    const filePath = `${path}/uploads/${file.path}`
+    const stream = createReadStream(filePath)
+    return new StreamableFile(stream)
+  }
+
+  async findOne(conditions: { _id: string }): Promise<File> {
+    return this.fileModel.findOne(conditions)
   }
 }

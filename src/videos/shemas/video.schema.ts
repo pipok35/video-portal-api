@@ -2,6 +2,8 @@ import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
 import { ByAt } from 'src/interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
+import { File } from '../../files/schemas/file.schema'
+
 
 export type VideoDocument = Video & Document;
 
@@ -16,11 +18,8 @@ export class Video {
   @Prop()
     description: string
 
-  @Prop({ required: true })
-    filename: string
-
-  @Prop({ required: true })
-    url: string
+  @Prop({ type: String, ref: 'File', required: true })
+    file: File
   
   @Prop(raw({
     by: String,
