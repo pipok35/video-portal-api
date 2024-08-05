@@ -3,10 +3,11 @@ import { AuthService } from './auth.service'
 import { LocalAuthGuard } from './guards/local-auth.guard'
 import { Public } from 'src/decorators/public.decorator'
 import { Response } from 'express'
+import { UsersService } from '../users/users.service'
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)
@@ -22,7 +23,8 @@ export class AuthController {
   }
 
   @Get('me')
-  me(@Request() req): string {
-    return req.user
+  async me(@Request() req) {
+    const user = await this.usersService.findOne({ _id: req.user })
+    return user
   }
 }

@@ -4,7 +4,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from '../users/users.service'
 import * as bcrypt from 'bcryptjs'
-import { omit } from 'lodash'
 
 @Injectable()
 export class AuthService {
@@ -14,7 +13,7 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, pass: string): Promise<Omit<User, 'password'>> {
-    const user = await this.usersService.findOne({ email }, { lean: true })
+    const user = await this.usersService.findOne({ email }, { lean: true, select: [ '+password' ] })
     if (!user) {
       throw new UnauthorizedException('Пользователь с таким логином не найден!')
     }
@@ -22,11 +21,11 @@ export class AuthService {
       throw new UnauthorizedException('Неверный логин или пароль!')
     }
     
-    return omit(user, [ 'password' ])
+    return user
   }
 
-  async login(user: any): Promise<{ access_token:string }> {
-    const payload = { sub: user._id }
+  async login(user: { _id: string, email: string, username: string}): Promise<{ access_token:string }> {
+    const payload = { sub: user._id, email: user.email }
     return {
       access_token: this.jwtService.sign(payload)
     }

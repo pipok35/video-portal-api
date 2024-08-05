@@ -31,6 +31,9 @@ export class UsersService {
     if (options?.lean) {
       user.lean()
     }
+    if (options?.select) {
+      user.select(options.select)
+    }
 
     return user
   }
