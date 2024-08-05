@@ -22,7 +22,7 @@ export class AuthController {
   }
 
   @Get('me')
-  me(@Request() req) {
+  me(@Request() req): string {
     return req.user
   }
 }

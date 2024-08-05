@@ -11,7 +11,7 @@ import { Model } from 'mongoose'
 export class FilesService {
   constructor(@InjectModel(File.name) private fileModel: Model<FileDocument>) {}
 
-  async createFile(file: Express.Multer.File, type: string, options: { user: string }): Promise<File> {
+  async createFile(file: Express.Multer.File, type: string, options?: { user: string }): Promise<File> {
     const createdFile = new this.fileModel({
       name: file.originalname,
       'created.by': options?.user

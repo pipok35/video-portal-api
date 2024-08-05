@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable, UnauthorizedException  } from '@nestjs/common'
+import { User } from 'src/users/schemas/user.schema'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from '../users/users.service'
 import * as bcrypt from 'bcryptjs'
+import { omit } from 'lodash'
 
 @Injectable()
 export class AuthService {
@@ -11,8 +13,8 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async validateUser(email: string, pass: string) {
-    const user = await this.usersService.findOne(email)
+  async validateUser(email: string, pass: string): Promise<Omit<User, 'password'>> {
+    const user = await this.usersService.findOne({ email }, { lean: true })
     if (!user) {
       throw new UnauthorizedException('Пользователь с таким логином не найден!')
     }
@@ -20,10 +22,10 @@ export class AuthService {
       throw new UnauthorizedException('Неверный логин или пароль!')
     }
     
-    return user
+    return omit(user, [ 'password' ])
   }
 
-  async login(user: any) {
+  async login(user: any): Promise<{ access_token:string }> {
     const payload = { sub: user._id }
     return {
       access_token: this.jwtService.sign(payload)

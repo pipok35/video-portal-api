@@ -26,7 +26,12 @@ export class UsersService {
     return newUser
   }
 
-  async findOne(email: string): Promise<User> {
-    return this.userModel.findOne({ email })
+  async findOne(conditions, options?): Promise<User> {
+    const user = this.userModel.findOne(conditions).lean()
+    if (options?.lean) {
+      user.lean()
+    }
+
+    return user
   }
 }

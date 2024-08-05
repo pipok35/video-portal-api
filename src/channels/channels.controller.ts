@@ -8,7 +8,7 @@ export class ChannelsController {
   constructor(private readonly channelsService: ChannelsService) {}
 
   @Post()
-  async create(@Body() createChannelDto: CreateChannelDto, @Request() req) {
+  async create(@Body() createChannelDto: CreateChannelDto, @Request() req): Promise<Channel> {
     return this.channelsService.create(createChannelDto, { user: req.user })
   }
 

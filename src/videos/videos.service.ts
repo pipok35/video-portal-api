@@ -8,7 +8,7 @@ import { CreateVideoDto } from './dto/create-video.dto'
 export class VideosService {
   constructor(@InjectModel(Video.name) private videoModel: Model<VideoDocument>) {}
 
-  async create(CreateVideoDto: CreateVideoDto, options: { user: string }): Promise<Video> {
+  async create(CreateVideoDto: CreateVideoDto, options?: { user: string }): Promise<Video> {
     const createdVideo = new this.videoModel({
       ...CreateVideoDto,
       'created.by': options?.user
