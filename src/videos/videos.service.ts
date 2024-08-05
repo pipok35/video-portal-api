@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Video, VideoDocument } from './shemas/video.schema'
@@ -22,6 +22,12 @@ export class VideosService {
   }
 
   async findOne(conditions: { _id: string, 'created.by': string }): Promise<Video> {
-    return this.videoModel.findOne(conditions)
+    const video = this.videoModel.findOne(conditions)
+    if (!video) {
+      if (!video) {
+        throw new NotFoundException('Видео не найдено!')
+      }
+    }
+    return video
   }
 }

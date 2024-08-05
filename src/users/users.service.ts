@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User, UserDocument } from './schemas/user.schema'
@@ -28,6 +28,10 @@ export class UsersService {
 
   async findOne(conditions, options?): Promise<User> {
     const user = this.userModel.findOne(conditions).lean()
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден!')
+    }
+
     if (options?.lean) {
       user.lean()
     }
