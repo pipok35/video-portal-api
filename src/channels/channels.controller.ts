@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Request, Param } from '@nestjs/common'
 import { ChannelsService } from './channels.service'
-import { CreateChannelDto } from './dto/createChannel.dto'
+import { CreateChannelDto } from './dto/create-channel.dto'
+import { Channel } from './schemas/channel.schema'
 
 @Controller('channels')
 export class ChannelsController {
@@ -12,12 +13,12 @@ export class ChannelsController {
   }
 
   @Get()
-  async findAll(@Request() req) {
+  async findAll(@Request() req): Promise<Channel[]> {
     return this.channelsService.findAll({ 'created.by': req.user })
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @Request() req) {
+  async findOne(@Param('id') id: string, @Request() req): Promise<Channel> {
     return await this.channelsService.findOne({ _id: id, 'created.by': req.user })
   }
 

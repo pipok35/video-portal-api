@@ -2,6 +2,7 @@ import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
 import { ByAt } from 'src/interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
+import { User } from '../../users/schemas/user.schema'
 
 export type ChannelDocument = Channel & Document;
 
@@ -16,8 +17,8 @@ export class Channel {
   @Prop()
     description: string
 
-  @Prop({ type: [ String ], default: [] })
-    subscribers: string[]
+  @Prop({ type: [ String ], ref: 'User', default: [] })
+    subscribers: User[]
   
   @Prop(raw({
     by: String,

@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Channel, ChannelDocument } from './schemas/channel.schema'
-import { CreateChannelDto } from './dto/createChannel.dto'
+import { CreateChannelDto } from './dto/create-channel.dto'
 
 @Injectable()
 export class ChannelsService {
   constructor(@InjectModel(Channel.name) private channelModel: Model<ChannelDocument>) {}
 
-  async create(channel: CreateChannelDto, options: { user: string }): Promise<Channel> {
+  async create(createChannelDto: CreateChannelDto, options: { user: string }): Promise<Channel> {
     const createdChannel = new this.channelModel({
-      ...channel,
+      ...createChannelDto,
       'created.by': options?.user
     })
 
