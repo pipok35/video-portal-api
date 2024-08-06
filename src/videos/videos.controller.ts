@@ -15,7 +15,7 @@ export class VideosController {
   
   @Get()
   async findAll(@Request() req): Promise<Video[]> {
-    return this.videosService.findAll({ 'created.by': req.user })
+    return this.videosService.findAll({ ...req.query.conditions })
   }
 
   @Get(':id')
