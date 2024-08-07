@@ -5,6 +5,7 @@ import { Model } from 'mongoose'
 import { User, UserDocument } from './schemas/user.schema'
 import { CreateUserDto } from './dto/create-user.dto'
 import * as bcrypt from 'bcryptjs'
+import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
 export class UsersService {
@@ -40,5 +41,37 @@ export class UsersService {
     }
 
     return user
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto, options): Promise<User> {
+    console.log(id, updateUserDto)
+    const user = await this.userModel.findOne({ _id: id })
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден!')
+    }
+
+    user.set({
+      ...updateUserDto,
+      updated: {
+        by: options?.user
+      }
+    })
+
+    return user.save()
+  }
+
+  async remove(id: string, options) {
+    const user = await this.userModel.findOne({ _id: id })
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден!')
+    }
+
+    user.set({
+      deleted: {
+        by: options?.user
+      }
+    })
+
+    user.save()
   }
 }
