@@ -19,7 +19,10 @@ export class Video {
     description: string
 
   @Prop({ type: String, ref: 'File', required: true })
-    file: File
+    videoFile: File
+  
+  @Prop({ type: String, ref: 'File' })
+    previewFile: File
   
   @Prop(raw({
     by: String,

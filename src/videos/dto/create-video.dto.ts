@@ -8,6 +8,10 @@ export class CreateVideoDto {
   @IsString()
     description: string
   
+  @IsNotEmpty()
   @IsString()
-    file: string
+    videoFile: string
+  
+  @IsString()
+    previewFile: string
 }

@@ -24,7 +24,7 @@ export class FilesService {
     return createdFile
   }
 
-  async writeFile(filePath: string, type:string, data: Buffer) {
+  async writeFile(filePath: string, type: string, data: Buffer) {
     const uploadFolder = `${path}/uploads/${filePath}`
     await ensureDir(`${path}/uploads/${type}`)
     await writeFile(uploadFolder, data)
