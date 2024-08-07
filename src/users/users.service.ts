@@ -27,12 +27,16 @@ export class UsersService {
     return newUser
   }
 
-  async findOne(conditions, options?): Promise<User> {
-    const user = this.userModel.findOne(conditions).lean()
+  async findOne(conditions: object, options?): Promise<UserDocument> {
+    const user = this.userModel.findOne(conditions)
     if (!user) {
       throw new NotFoundException('Пользователь не найден!')
     }
-
+    if (Array.isArray(options?.populates)) {
+      for (const populate of options.populates) {
+        user.populate(populate)
+      }
+    }
     if (options?.lean) {
       user.lean()
     }
@@ -44,7 +48,6 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto, options): Promise<User> {
-    console.log(id, updateUserDto)
     const user = await this.userModel.findOne({ _id: id })
     if (!user) {
       throw new NotFoundException('Пользователь не найден!')

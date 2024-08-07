@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Request } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Request, Patch } from '@nestjs/common'
 import { VideosService } from './videos.service'
 import { CreateVideoDto } from './dto/create-video.dto'
 import { Video } from './shemas/video.schema'
@@ -21,5 +21,10 @@ export class VideosController {
   @Get(':id')
   async findOne(@Param('id') id: string, @Request() req): Promise<Video> {
     return this.videosService.findOne({ _id: id, 'created.by': req.user })
+  }
+
+  @Patch(':id/addToHistory')
+  update(@Param('id') id: string, @Request() req) {
+    this.videosService.addToHistory(id, req.user)
   }
 }

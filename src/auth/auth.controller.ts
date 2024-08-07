@@ -24,7 +24,7 @@ export class AuthController {
 
   @Get('me')
   async me(@Request() req) {
-    const user = await this.usersService.findOne({ _id: req.user })
+    const user = await this.usersService.findOne({ _id: req.user }, { populates: [ 'videoHistory' ] })
     return user
   }
 }

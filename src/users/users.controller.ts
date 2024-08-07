@@ -12,7 +12,7 @@ export class UsersController {
   @Post('register')
   @Public()
   async register(@Body() createUserDto: CreateUserDto): Promise<User> {
-    const oldUser = await this.usersService.findOne(createUserDto.email)
+    const oldUser = await this.usersService.findOne({ email: createUserDto.email })
     if (oldUser) {
       throw new BadRequestException('Такой пользователь уже был зарегистрирован!')
     }
