@@ -21,6 +21,9 @@ export class User {
   
   @Prop({ type: [ String ] , ref: 'Video', default: [] })
     videoHistory: VideoHistoryType[]
+  
+  @Prop()
+    avatarId: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

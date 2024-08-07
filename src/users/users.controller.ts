@@ -1,4 +1,4 @@
-import { Controller, Post, Body, BadRequestException, Request, Delete, Param, Patch } from '@nestjs/common'
+import { Controller, Post, Body, BadRequestException, Request, Delete, Param } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { Public } from 'src/decorators/public.decorator'
@@ -19,7 +19,7 @@ export class UsersController {
     return await this.usersService.register(createUserDto)
   }
 
-  @Patch(':id')
+  @Post(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req): Promise<User> {
     return this.usersService.update(id, updateUserDto, { user: req.user })
   }
