@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Request, Patch, NotFoundException } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Request, Patch, NotFoundException, BadRequestException } from '@nestjs/common'
 import { VideosService } from './videos.service'
 import { CreateVideoDto } from './dto/create-video.dto'
 import { Video } from './shemas/video.schema'
@@ -8,9 +8,13 @@ export class VideosController {
   constructor(private readonly videosService: VideosService) {}
 
   @Post('create')
-  async create(@Body() createVideoDto: CreateVideoDto, @Request() req): Promise<string> {
-    const video = await this.videosService.create(createVideoDto, { user: req.user })
-    return video._id
+  async create(@Body() createVideoDto: CreateVideoDto, @Request() req) {
+    try {
+      const video = await this.videosService.create(createVideoDto, { user: req.user })
+      return { status: 'success', message: 'Видео успешно загружено', video: video._id }
+    } catch (error) {
+      throw new BadRequestException('При создании видео произошла ошибка')
+    }
   }
   
   @Get()

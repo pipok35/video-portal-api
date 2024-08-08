@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Request, Param, NotFoundException } from '@nestjs/common'
+import { Controller, Get, Post, Body, Request, Param, NotFoundException, BadRequestException } from '@nestjs/common'
 import { ChannelsService } from './channels.service'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { Channel } from './schemas/channel.schema'
@@ -8,8 +8,13 @@ export class ChannelsController {
   constructor(private readonly channelsService: ChannelsService) {}
 
   @Post()
-  async create(@Body() createChannelDto: CreateChannelDto, @Request() req): Promise<Channel> {
-    return this.channelsService.create(createChannelDto, { user: req.user })
+  async create(@Body() createChannelDto: CreateChannelDto, @Request() req) {
+    try {
+      const channel = await this.channelsService.create(createChannelDto, { user: req.user })
+      return { status: 'success', message: 'Канал успешно создан', channel }
+    } catch (error) {
+      throw new BadRequestException('При создании канала произошла ошибка')
+    }
   }
 
   @Get()

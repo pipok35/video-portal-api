@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Channel, ChannelDocument } from './schemas/channel.schema'
@@ -9,20 +9,13 @@ export class ChannelsService {
   constructor(@InjectModel(Channel.name) private channelModel: Model<ChannelDocument>) {}
 
   async create(createChannelDto: CreateChannelDto, options: { user: string }): Promise<Channel> {
+    const createdChannel = new this.channelModel({
+      ...createChannelDto,
+      'created.by': options?.user,
+      'created.at': Date.now()
+    })
 
-    try { 
-      const createdChannel = new this.channelModel({
-        ...createChannelDto,
-        'created.by': options?.user,
-        'created.at': Date.now()
-      })
-
-      createdChannel.save()
-
-      return createdChannel
-    } catch (error) {
-      throw new InternalServerErrorException('Произошла ошибка при создании канала', error.message)
-    }
+    return createdChannel.save()
   }
 
   async findAll(conditions: { 'created.by': string }): Promise<Channel[]> {
