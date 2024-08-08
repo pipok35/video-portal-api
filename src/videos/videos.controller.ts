@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Request, Patch } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Request, Patch, NotFoundException } from '@nestjs/common'
 import { VideosService } from './videos.service'
 import { CreateVideoDto } from './dto/create-video.dto'
 import { Video } from './shemas/video.schema'
@@ -15,12 +15,17 @@ export class VideosController {
   
   @Get()
   async findAll(@Request() req): Promise<Video[]> {
-    return this.videosService.findAll({ ...req.query.conditions })
+    return await this.videosService.findAll({ ...req.query.conditions })
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Request() req): Promise<Video> {
-    return this.videosService.findOne({ _id: id, 'created.by': req.user })
+    const video = await this.videosService.findOne({ _id: id, 'created.by': req.user })
+    if (!video) {
+      throw new NotFoundException('Видео не найдено!')
+    }
+
+    return video
   }
 
   @Patch(':id/addToHistory')

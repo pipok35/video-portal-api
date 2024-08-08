@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Request, Param } from '@nestjs/common'
+import { Controller, Get, Post, Body, Request, Param, NotFoundException } from '@nestjs/common'
 import { ChannelsService } from './channels.service'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { Channel } from './schemas/channel.schema'
@@ -14,12 +14,17 @@ export class ChannelsController {
 
   @Get()
   async findAll(@Request() req): Promise<Channel[]> {
-    return this.channelsService.findAll({ 'created.by': req.user })
+    return await this.channelsService.findAll({ 'created.by': req.user })
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Request() req): Promise<Channel> {
-    return await this.channelsService.findOne({ _id: id, 'created.by': req.user })
+    const channel = await this.channelsService.findOne({ _id: id, 'created.by': req.user })
+    if (!channel) {
+      throw new NotFoundException('Канал не найден!')
+    }
+
+    return channel
   }
 
   @Post(':id/subscribe')

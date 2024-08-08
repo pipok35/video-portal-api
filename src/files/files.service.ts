@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { path } from 'app-root-path'
 import { extname } from 'path'
@@ -11,16 +11,21 @@ export class FilesService {
   constructor(@InjectModel(File.name) private fileModel: Model<FileDocument>) {}
 
   async createFile(file: Express.Multer.File, type: string, options?: { user: string }): Promise<File> {
-    const createdFile = new this.fileModel({
-      name: file.originalname,
-      'created.by': options?.user
-    })
-
-    const extension = extname(createdFile.name)
-    createdFile.path = `${type}/${createdFile._id}${extension}`
-    createdFile.save()
-    
-    return createdFile
+    try {
+      const createdFile = new this.fileModel({
+        name: file.originalname,
+        'created.by': options?.user
+      })
+  
+      const extension = extname(createdFile.name)
+      createdFile.path = `${type}/${createdFile._id}${extension}`
+      createdFile.save()
+      
+      return createdFile
+    } catch (error) {
+      console.error(error.message)
+      throw new InternalServerErrorException('Произошла ошибка при сохранении файла', error.message)
+    }
   }
 
   async writeFile(filePath: string, type: string, data: Buffer) {
@@ -31,9 +36,7 @@ export class FilesService {
 
   async findOne(conditions: { _id: string }): Promise<File> {
     const file = this.fileModel.findOne(conditions)
-    if (!file) {
-      throw new NotFoundException('Файл не найден!')
-    }
+
     return file
   }
 }

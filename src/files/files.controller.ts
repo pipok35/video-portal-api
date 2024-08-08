@@ -24,6 +24,10 @@ export class FilesController {
   @Get(':fileId/download')
   async getFile(@Param('fileId') fileId: string, @Res() res) {
     const file = await this.filesService.findOne({ _id: fileId })
+    if (!file) {
+      throw new NotFoundException('Файл не найден!')
+    }
+    
     const filePath = `${path}/uploads/${file.path}`
 
     if (!existsSync(filePath)) {

@@ -24,11 +24,7 @@ export class VideosService {
 
   async findOne(conditions: { _id: string, 'created.by': string }): Promise<Video> {
     const video = this.videoModel.findOne(conditions)
-    if (!video) {
-      if (!video) {
-        throw new NotFoundException('Видео не найдено!')
-      }
-    }
+
     return video
   }
 
