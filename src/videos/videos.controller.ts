@@ -33,7 +33,7 @@ export class VideosController {
   }
 
   @Patch(':id/addToHistory')
-  update(@Param('id') id: string, @Request() req) {
-    this.videosService.addToHistory(id, req.user)
+  async update(@Param('id') id: string, @Request() req) {
+    await this.videosService.addToHistory(id, req.user)
   }
 }
