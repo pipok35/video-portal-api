@@ -8,7 +8,4 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @IsString()
     username: string
-  
-  @IsString()
-    avatarId: string
 }

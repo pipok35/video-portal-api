@@ -63,6 +63,38 @@ export class UsersService {
     return user.save()
   }
 
+  async updateAvatar(id: string, avatarId: string, options) {
+    const user = await this.userModel.findOne({ _id: id })
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден!')
+    }
+
+    user.set({
+      avatarId,
+      updated: {
+        by: options?.user
+      }
+    })
+
+    user.save()
+  }
+
+  async cleanHistory(id: string, options) {
+    const user = await this.userModel.findOne({ _id: id })
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден!')
+    }
+
+    user.set({
+      videoHistory: [],
+      updated: {
+        by: options?.user
+      }
+    })
+
+    user.save()
+  }
+
   async remove(id: string, options) {
     const user = await this.userModel.findOne({ _id: id })
     if (!user) {

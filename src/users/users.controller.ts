@@ -1,4 +1,4 @@
-import { Controller, Post, Body, BadRequestException, Request, Delete, Param } from '@nestjs/common'
+import { Controller, Post, Body, BadRequestException, Request, Delete, Param, Patch } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { Public } from 'src/decorators/public.decorator'
@@ -22,6 +22,16 @@ export class UsersController {
   @Post(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req): Promise<User> {
     return this.usersService.update(id, updateUserDto, { user: req.user })
+  }
+
+  @Patch(':id/avatar')
+  updateAvatar(@Param('id') id: string, @Body() data, @Request() req) {
+    this.usersService.updateAvatar(id, data.avatarId, { user: req.user })
+  }
+
+  @Patch(':id/cleanHistory')
+  cleanHistory(@Param('id') id: string, @Request() req) {
+    this.usersService.cleanHistory(id, { user: req.user })
   }
 
   @Delete(':id')
