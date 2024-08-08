@@ -34,11 +34,11 @@ export class ChannelsController {
 
   @Post(':id/subscribe')
   async subscribe(@Param('id') channelId: string, @Request() req) {
-    return this.channelsService.subscribe(channelId, req.user.userId)
+    return await this.channelsService.subscribe(channelId, req.user.userId)
   }
 
   @Post(':id/unsubscribe')
   async unsubscribe(@Param('id') channelId: string, @Request() req) {
-    return this.channelsService.unsubscribe(channelId, req.user.userId)
+    return await this.channelsService.unsubscribe(channelId, req.user.userId)
   }
 }

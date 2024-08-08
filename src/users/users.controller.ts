@@ -20,18 +20,36 @@ export class UsersController {
   }
 
   @Post(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req): Promise<User> {
-    return this.usersService.update(id, updateUserDto, { user: req.user })
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req) {
+    try {
+      const user = await this.usersService.update(id, updateUserDto, { user: req.user })
+
+      return { status: 'success', message: 'Данные успешно обновлены', user }
+    } catch (error) {
+      throw new BadRequestException('При обновлении данных пользователя произошла ошибка')
+    }
   }
 
   @Patch(':id/avatar')
-  updateAvatar(@Param('id') id: string, @Body() data, @Request() req) {
-    this.usersService.updateAvatar(id, data.avatarId, { user: req.user })
+  async updateAvatar(@Param('id') id: string, @Body() data, @Request() req) {
+    try {
+      await this.usersService.updateAvatar(id, data.avatarId, { user: req.user })
+
+      return { status: 'success', message: 'Аватарка успешно изменена' }
+    } catch (error) {
+      throw new BadRequestException('При обновлении аватарка произошла ошибка')
+    }
   }
 
   @Patch(':id/cleanHistory')
-  cleanHistory(@Param('id') id: string, @Request() req) {
-    this.usersService.cleanHistory(id, { user: req.user })
+  async cleanHistory(@Param('id') id: string, @Request() req) {
+    try {
+      await this.usersService.cleanHistory(id, { user: req.user })
+
+      return { status: 'success', message: 'История успешно очищена' }
+    } catch (error) {
+      throw new BadRequestException('При очистке истории произошла ошибка')
+    }
   }
 
   @Delete(':id')
