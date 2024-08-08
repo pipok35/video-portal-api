@@ -20,19 +20,13 @@ export class File {
     by: String,
     at: Date
   }))
-    created?: Record<string, ByAt>
+    created: Record<string, ByAt>
 
   @Prop(raw({
     by: String,
     at: Date
   }))
-    updated?: Record<string, ByAt>
-
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    deleted?: Record<string, ByAt>
+    updated: Record<string, ByAt>
 }
 
 export const FileSchema = SchemaFactory.createForClass(File)

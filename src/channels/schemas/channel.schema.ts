@@ -24,19 +24,19 @@ export class Channel {
     by: String,
     at: Date
   }))
-    created?: Record<string, ByAt>
+    created: Record<string, ByAt>
 
   @Prop(raw({
     by: String,
     at: Date
   }))
-    updated?: Record<string, ByAt>
+    updated: Record<string, ByAt>
 
   @Prop(raw({
     by: String,
     at: Date
   }))
-    deleted?: Record<string, ByAt>
+    deleted: Record<string, ByAt>
 }
 
 export const ChannelSchema = SchemaFactory.createForClass(Channel)
