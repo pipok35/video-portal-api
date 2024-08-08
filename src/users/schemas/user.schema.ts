@@ -21,7 +21,7 @@ export class User {
   @Prop({ required: true, select: false })
     password: string
   
-  @Prop({ type: [ String ] , ref: 'Video', default: [] })
+  @Prop({ type: [ { type: String, ref: 'Video' } ] , default: [] })
     videoHistory: VideoHistoryType[]
   
   @Prop()
