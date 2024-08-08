@@ -1,7 +1,7 @@
 import { Controller, Post, Body, BadRequestException, Request, Delete, Param, Patch } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
-import { Public } from 'src/decorators/public.decorator'
+import { Public } from 'api-src/decorators/public.decorator'
 import { User } from './schemas/user.schema'
 import { UpdateUserDto } from './dto/update-user.dto'
 

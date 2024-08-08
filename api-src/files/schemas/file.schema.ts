@@ -1,24 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
+import { ByAt } from 'api-src/interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
-import { User } from '../../users/schemas/user.schema'
-import { ByAt } from 'src/interfaces/byAt'
 
-export type ChannelDocument = Channel & Document;
+export type FileDocument = File & Document;
 
 @Schema({ versionKey: false, timestamps: false })
-export class Channel {
+export class File {
   @Prop({ required: true, default: uuidv4 })
     _id: string
   
   @Prop({ required: true })
-    title: string
+    name: string
 
-  @Prop()
-    description: string
-
-  @Prop({ type: [ { type: String, ref: 'User' } ], default: [] })
-    subscribers: User[]
+  @Prop({ required: true })
+    path: string
   
   @Prop({
     type: {
@@ -35,14 +31,6 @@ export class Channel {
     }
   })
     updated: ByAt
-
-  @Prop({
-    type: {
-      by: { type: String, ref: 'User' },
-      at: { type: Date }
-    }
-  })
-    deleted: ByAt
 }
 
-export const ChannelSchema = SchemaFactory.createForClass(Channel)
+export const FileSchema = SchemaFactory.createForClass(File)
