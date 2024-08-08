@@ -1,8 +1,8 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
-import { ByAt } from 'src/interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
 import { User } from '../../users/schemas/user.schema'
+import { ByAt } from 'src/interfaces/byAt'
 
 export type ChannelDocument = Channel & Document;
 
@@ -17,26 +17,32 @@ export class Channel {
   @Prop()
     description: string
 
-  @Prop({ type: [ String ], ref: 'User', default: [] })
+  @Prop({ type: [ { type: String, ref: 'User' } ], default: [] })
     subscribers: User[]
   
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    created: Record<string, ByAt>
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date, default: Date.now }
+    }
+  })
+    created: ByAt
 
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    updated: Record<string, ByAt>
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date, default: Date.now }
+    }
+  })
+    updated: ByAt
 
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    deleted: Record<string, ByAt>
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date }
+    }
+  })
+    deleted: ByAt
 }
 
 export const ChannelSchema = SchemaFactory.createForClass(Channel)

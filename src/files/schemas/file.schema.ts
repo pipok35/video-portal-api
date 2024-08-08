@@ -1,4 +1,4 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
 import { ByAt } from 'src/interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
@@ -16,17 +16,21 @@ export class File {
   @Prop({ required: true })
     path: string
   
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    created: Record<string, ByAt>
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date, default: Date.now }
+    }
+  })
+    created: ByAt
 
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    updated: Record<string, ByAt>
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date, default: Date.now }
+    }
+  })
+    updated: ByAt
 }
 
 export const FileSchema = SchemaFactory.createForClass(File)

@@ -1,11 +1,12 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
+import { ByAt } from 'src/interfaces/byAt'
 import { Video } from 'src/videos/shemas/video.schema'
 import { v4 as uuidv4 } from 'uuid'
-import { ByAt } from 'src/interfaces/byAt'
 
 export type UserDocument = User & Document
 type VideoHistoryType = string | Video
+
 @Schema()
 export class User {
   @Prop({ required: true, default: uuidv4 })
@@ -26,23 +27,29 @@ export class User {
   @Prop()
     avatarId: string
   
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    created: Record<string, ByAt>
-  
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    updated: Record<string, ByAt>
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date, default: Date.now }
+    }
+  })
+    created: ByAt
 
-  @Prop(raw({
-    by: String,
-    at: Date
-  }))
-    deleted: Record<string, ByAt>
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date, default: Date.now }
+    }
+  })
+    updated: ByAt
+
+  @Prop({
+    type: {
+      by: { type: String, ref: 'User' },
+      at: { type: Date }
+    }
+  })
+    deleted: ByAt
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)
