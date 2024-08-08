@@ -1,10 +1,11 @@
-import { Controller, Request, Get, Post, Query, StreamableFile, UploadedFile, UseInterceptors, Param, NotFoundException } from '@nestjs/common'
+import { Controller, Request, Get, Post, Query, UploadedFile, UseInterceptors, Param, NotFoundException, Res } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { FilesService } from './files.service'
 import { Public } from 'src/decorators/public.decorator'
 import { File } from './schemas/file.schema'
 import { path } from 'app-root-path'
 import { existsSync } from 'fs-extra'
+import { createReadStream } from 'fs'
 
 @Controller('files')
 export class FilesController {
@@ -21,7 +22,7 @@ export class FilesController {
 
   @Public()
   @Get(':fileId/download')
-  async getFile(@Param('fileId') fileId: string): Promise<StreamableFile> {
+  async getFile(@Param('fileId') fileId: string, @Res() res) {
     const file = await this.filesService.findOne({ _id: fileId })
     const filePath = `${path}/uploads/${file.path}`
 
@@ -29,8 +30,8 @@ export class FilesController {
       throw new NotFoundException('Файл не найден в хранилище!')
     }
     
-    const stream = await this.filesService.getFileReadStream(filePath)
+    const stream = createReadStream(filePath)
 
-    return new StreamableFile(stream)
+    stream.pipe(res)
   }
 }

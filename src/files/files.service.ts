@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { path } from 'app-root-path'
 import { extname } from 'path'
-import { createReadStream } from 'fs'
 import { ensureDir, writeFile } from 'fs-extra'
 import { File, FileDocument } from './schemas/file.schema'
 import { Model } from 'mongoose'
@@ -28,10 +27,6 @@ export class FilesService {
     const uploadFolder = `${path}/uploads/${filePath}`
     await ensureDir(`${path}/uploads/${type}`)
     await writeFile(uploadFolder, data)
-  }
-
-  async getFileReadStream(filePath: string) {
-    return createReadStream(filePath)
   }
 
   async findOne(conditions: { _id: string }): Promise<File> {
