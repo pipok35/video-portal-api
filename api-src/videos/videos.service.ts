@@ -9,10 +9,11 @@ import { UsersService } from 'api-src/users/users.service'
 export class VideosService {
   constructor(@InjectModel(Video.name) private videoModel: Model<VideoDocument>, private readonly usersService: UsersService) {}
 
-  async create(CreateVideoDto: CreateVideoDto, options?: { user: string }): Promise<Video> {
+  async create(CreateVideoDto: CreateVideoDto, options?: { user: string, channel: string }): Promise<Video> {
     const createdVideo = new this.videoModel({
       ...CreateVideoDto,
-      'created.by': options?.user
+      'created.by': options?.user,
+      channel: options?.channel
     })
     
     return createdVideo.save()

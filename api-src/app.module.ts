@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module'
 import { VideosModule } from './videos/videos.module'
 import { ChannelsModule } from './channels/channels.module'
 import { FilesModule } from './files/files.module'
+import { ChannelMiddleware } from './channels/middleware/channel.middleware'
 
 @Module({
   imports: [
@@ -33,4 +34,10 @@ import { FilesModule } from './files/files.module'
     }
   ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(ChannelMiddleware)
+      .forRoutes('*')
+  }
+}

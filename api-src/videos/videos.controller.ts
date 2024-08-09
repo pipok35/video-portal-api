@@ -10,7 +10,7 @@ export class VideosController {
   @Post('create')
   async create(@Body() createVideoDto: CreateVideoDto, @Request() req) {
     try {
-      const video = await this.videosService.create(createVideoDto, { user: req.user })
+      const video = await this.videosService.create(createVideoDto, { user: req.user, channel: req.channel })
       return { status: 'success', message: 'Видео успешно загружено', video: video._id }
     } catch (error) {
       throw new BadRequestException('При создании видео произошла ошибка')

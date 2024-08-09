@@ -3,6 +3,7 @@ import { Document } from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 import { File } from '../../files/schemas/file.schema'
 import { ByAt } from 'api-src/interfaces/byAt'
+import { Channel } from 'api-src/channels/schemas/channel.schema'
 
 
 export type VideoDocument = Video & Document;
@@ -23,6 +24,9 @@ export class Video {
   
   @Prop({ type: String, ref: 'File' })
     previewFile: File
+  
+  @Prop({ type: String, ref: 'Channel' })
+    channel: Channel
   
   @Prop({
     type: {
