@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Channel, ChannelDocument } from './schemas/channel.schema'
@@ -26,6 +26,22 @@ export class ChannelsService {
     const channel = this.channelModel.findOne(conditions)
 
     return channel
+  }
+
+  async updateAvatar(id: string, avatarId: string, options) {
+    const channel = await this.channelModel.findOne({ _id: id })
+    if (!channel) {
+      throw new NotFoundException('Канал не найден!')
+    }
+
+    channel.set({
+      avatarId,
+      updated: {
+        by: options?.user
+      }
+    })
+
+    channel.save()
   }
 
   async subscribe(channelId: string, userId: string): Promise<Channel> {

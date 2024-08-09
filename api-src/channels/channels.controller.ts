@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Request, Param, NotFoundException, BadRequestException } from '@nestjs/common'
+import { Controller, Get, Post, Body, Request, Param, NotFoundException, BadRequestException, Patch } from '@nestjs/common'
 import { ChannelsService } from './channels.service'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { Channel } from './schemas/channel.schema'
@@ -30,6 +30,17 @@ export class ChannelsController {
     }
 
     return channel
+  }
+
+  @Patch(':id/avatar')
+  async updateAvatar(@Param('id') id: string, @Body() data, @Request() req) {
+    try {
+      await this.channelsService.updateAvatar(id, data.avatarId, { user: req.user })
+
+      return { status: 'success', message: 'Аватарка успешно изменена' }
+    } catch (error) {
+      throw new BadRequestException('При обновлении аватарка произошла ошибка')
+    }
   }
 
   @Post(':id/subscribe')

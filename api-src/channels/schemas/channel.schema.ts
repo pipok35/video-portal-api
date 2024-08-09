@@ -16,6 +16,9 @@ export class Channel {
 
   @Prop()
     description: string
+  
+  @Prop()
+    avatarId: string
 
   @Prop({ type: [ { type: String, ref: 'User' } ], default: [] })
     subscribers: User[]
