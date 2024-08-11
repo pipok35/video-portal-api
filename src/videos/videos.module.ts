@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { VideosService } from './videos.service'
 import { VideosController } from './videos.controller'
 import { Video, VideoSchema } from './shemas/video.schema'
-import { UsersModule } from 'api-src/users/users.module'
+import { UsersModule } from '../users/users.module'
 
 @Module({
   imports: [ MongooseModule.forFeature([ { name: Video.name, schema: VideoSchema } ]), UsersModule ],

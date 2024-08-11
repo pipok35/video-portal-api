@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
-import { ByAt } from 'api-src/interfaces/byAt'
+import { ByAt } from '../../interfaces/byAt'
 import { v4 as uuidv4 } from 'uuid'
 
 export type FileDocument = File & Document;

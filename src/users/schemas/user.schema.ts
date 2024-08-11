@@ -1,32 +1,31 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
+import { ByAt } from '../../interfaces/byAt'
+import { Video } from '../../videos/shemas/video.schema'
 import { v4 as uuidv4 } from 'uuid'
-import { File } from '../../files/schemas/file.schema'
-import { ByAt } from 'api-src/interfaces/byAt'
-import { Channel } from 'api-src/channels/schemas/channel.schema'
 
+export type UserDocument = User & Document
+type VideoHistoryType = string | Video
 
-export type VideoDocument = Video & Document;
-
-@Schema({ versionKey: false, timestamps: false })
-export class Video {
+@Schema()
+export class User {
   @Prop({ required: true, default: uuidv4 })
     _id: string
   
   @Prop({ required: true })
-    title: string
+    username: string
 
+  @Prop({ required: true })
+    email: string
+
+  @Prop({ required: true, select: false })
+    password: string
+  
+  @Prop({ type: [ { type: String, ref: 'Video' } ] , default: [] })
+    videoHistory: VideoHistoryType[]
+  
   @Prop()
-    description: string
-
-  @Prop({ type: String, ref: 'File', required: true })
-    videoFile: File
-  
-  @Prop({ type: String, ref: 'File' })
-    previewFile: File
-  
-  @Prop({ type: String, ref: 'Channel' })
-    channel: Channel
+    avatarId: string
   
   @Prop({
     type: {
@@ -53,4 +52,4 @@ export class Video {
     deleted: ByAt
 }
 
-export const VideoSchema = SchemaFactory.createForClass(Video)
+export const UserSchema = SchemaFactory.createForClass(User)

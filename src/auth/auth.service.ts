@@ -1,4 +1,4 @@
-import { User } from 'api-src/users/schemas/user.schema'
+import { User } from '../users/schemas/user.schema'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from '../users/users.service'

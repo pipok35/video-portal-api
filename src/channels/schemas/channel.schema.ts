@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 import { User } from '../../users/schemas/user.schema'
-import { ByAt } from 'api-src/interfaces/byAt'
+import { ByAt } from '../../interfaces/byAt'
 
 export type ChannelDocument = Channel & Document;
 

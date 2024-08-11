@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Video, VideoDocument } from './shemas/video.schema'
 import { CreateVideoDto } from './dto/create-video.dto'
-import { UsersService } from 'api-src/users/users.service'
+import { UsersService } from '../users/users.service'
 
 @Injectable()
 export class VideosService {
