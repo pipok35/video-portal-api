@@ -1,7 +1,7 @@
 import { Controller, Request, Get, Post, Query, UploadedFile, UseInterceptors, Param, NotFoundException, Res, BadRequestException } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { FilesService } from './files.service'
-import { Public } from 'api-src/decorators/public.decorator'
+import { Public } from '../decorators/public.decorator'
 import { path } from 'app-root-path'
 import { existsSync } from 'fs-extra'
 import { createReadStream } from 'fs'
